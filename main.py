@@ -1,6 +1,24 @@
 import os
 import time
 import requests
+import kivy
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.gridlayout import GridLayout
+
+
+class MyLayout(GridLayout):
+    def __init__(self, **kwargs):
+        super(MyLayout, self).__init__(**kwargs)
+        self.cols = 4
+        self.add_widget(Label(text = "cryptoBot"))
+        
+        
+
+class MyApp(App):
+    def build(self): 
+            
+        return MyLayout()
 
 
 
@@ -100,4 +118,6 @@ def main():
 
 
 
-main()
+#main()
+if __name__ == "__main__":
+    MyApp().run()

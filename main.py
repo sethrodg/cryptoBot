@@ -3,6 +3,7 @@ import os
 import time
 from turtle import color, onclick
 import requests
+import sys
 
 import kivy
 from kivy.app import App
@@ -27,8 +28,11 @@ class MyLayout(GridLayout):
     def __init__(self, **kwargs):
 
         super(MyLayout, self).__init__(**kwargs)
-        self.cols = 2
+        self.cols = 3
         self.active = "Inactive"
+        
+        self.low_price = sys.maxsize
+        self.high_price = 0
 
         self.active_label = Label(text = self.active, color = [1, 0, 0, 1])
         self.add_widget(self.active_label)
@@ -43,16 +47,31 @@ class MyLayout(GridLayout):
         self.button_one.bind(on_press = self.pressed_one)
         self.add_widget(self.button_one)
 
+        self.button_two = Button(text= "Buy")
+        self.add_widget(self.button_two)
+
+        self.button_three = Button(text= "Sell")
+        self.add_widget(self.button_three)
+
 
     def pressed_one(self, instance):
         running = self.active_label.text
+
+      
     
         if running == "Inactive":
             self.active_label.text = "Active"
             self.active_label.color = [0, 1, 0, 1]
 
-            price_text = "BTC: $" + str(getPrice())
+
+
+            price = getPrice()
+            self.high_price = max(self.high_price, price)
+            self.low_price = min(self.low_price, price)
+            price_text = "BTC: $" + str(price)
             self.label_one.text = (price_text)
+
+            self.label_two.text = "High: $" + str(self.high_price) + "\nLow: $" + str(self.low_price)
 
         else:
             self.active_label.text  = "Inactive"
